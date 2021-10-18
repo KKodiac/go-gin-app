@@ -6,36 +6,60 @@
 // 4. Test that the application returns a XML list of articles when the Accept header is set to "application/xml"
 package main
 
-import (
-	"io/ioutil"
-	"net/http"
-	"net/http/httptest"
-	"strings"
-	"testing"
-)
+// Test that a GET request to the home page returns the list of articles
+// in JSON format when the Accept header is set to application/json
+// func TestArticleListJSON(t *testing.T) {
+// 	r := getRouter(true)
 
-// Tests sending GET Request to "/" page and receiving status code 200
-// for unauthenticated user
-func TestShowIndexPageUnauthenticated(t *testing.T) {
-	// Creates router
-	r := getRouter(true)
+// 	// Define the route similar to its definition in the routes file
+// 	r.GET("/", showIndexPage)
 
-	// Sends GET request to the root home page "/"
-	r.GET("/", showIndexPage)
+// 	// Create a request to send to the above route
+// 	req, _ := http.NewRequest("GET", "/", nil)
+// 	req.Header.Add("Accept", "application/json")
 
-	// response received from the previous GET request
-	req, _ := http.NewRequest("GET", "/", nil)
+// 	testHTTPResponse(t, r, req, func(w *httptest.ResponseRecorder) bool {
+// 		// Test that the http status code is 200
+// 		statusOK := w.Code == http.StatusOK
 
-	testHTTPResponse(t, r, req, func(w *httptest.ResponseRecorder) bool {
-		// Tests if HTTP status code is 200 OK
-		statusOK := w.Code == http.StatusOK
+// 		// Test that the response is JSON which can be converted to
+// 		// an array of Article structs
+// 		p, err := ioutil.ReadAll(w.Body)
+// 		if err != nil {
+// 			return false
+// 		}
+// 		var articles []article
+// 		err = json.Unmarshal(p, &articles)
 
-		// Reads previously received response HTML.
-		// Checks if Title tag of the HTML is "Home Page"
-		// A lot more testing can be done by using html parser libraries
-		p, err := ioutil.ReadAll(w.Body)
-		pageOK := err == nil && strings.Index(string(p), "<title>Home Page</title>") > 0
+// 		return err == nil && len(articles) >= 2 && statusOK
+// 	})
+// }
 
-		return statusOK && pageOK
-	})
-}
+// Test that a GET request to an article page returns the article in XML
+// format when the Accept header is set to application/xml
+// func TestArticleXML(t *testing.T) {
+// 	r := getRouter(true)
+
+// 	// Define the route similar to its definition in the routes file
+// 	r.GET("/article/view/:article_id", getArticle)
+
+// 	// Create a request to send to the above route
+// 	req, _ := http.NewRequest("GET", "/article/view/1", nil)
+// 	req.Header.Add("Accept", "application/xml")
+
+// 	testHTTPResponse(t, r, req, func(w *httptest.ResponseRecorder) bool {
+// 		// Test that the http status code is 200
+// 		statusOK := w.Code == http.StatusOK
+
+// 		// Test that the response is JSON which can be converted to
+// 		// an array of Article structs
+// 		p, err := ioutil.ReadAll(w.Body)
+// 		if err != nil {
+// 			return false
+// 		}
+// 		var a article
+// 		err = xml.Unmarshal(p, &a)
+
+// 		return err == nil && a.ID == 1 && len(a.Title) >= 0 && statusOK
+// 	})
+// }

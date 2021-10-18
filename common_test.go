@@ -12,6 +12,7 @@ import (
 )
 
 var tmpArticleList []article
+var tmpUserList []user
 
 // Used for setup before executing the test functions
 func TestMain(m *testing.M) {
@@ -43,12 +44,23 @@ func testHTTPResponse(t *testing.T, r *gin.Engine, req *http.Request, f func(w *
 	}
 }
 
+// Helper function that allows for testing middleware request
+func testMiddlewareRequest(t *testing.T, r *gin.Engine, expectedHTTPCode int) {
+	req, _ := http.NewRequest("GET", "/", nil)
+
+	testHTTPResponse(t, r, req, func(w *httptest.ResponseRecorder) bool {
+		return w.Code == expectedHTTPCode
+	})
+}
+
 // Copy of list of articles for temporary use during testing
 func saveLists() {
 	tmpArticleList = articleList
+	tmpUserList = userList
 }
 
 // This function is used to restore the main lists from the temporary one
 func restoreLists() {
 	articleList = tmpArticleList
+	userList = tmpUserList
 }

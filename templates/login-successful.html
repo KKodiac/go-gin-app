@@ -1,0 +1,13 @@
+<!--login-successful.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+<title>Submission Successful</title>
+<div>
+  You have successfully logged in.
+  <p>Welcome {{ .Name }} </p>
+</div>
+
+    
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}
